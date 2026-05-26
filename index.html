@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>张恩慈 · 产品经理</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ===== CSS 变量与全局重置 ===== */
+    :root {
+      --bg:           #f4f6fb;
+      --bg-card:      #ffffff;
+      --accent:       #3B7DD8;
+      --accent-light: #EBF2FF;
+      --accent-2:     #10B981;
+      --accent-2-lt:  #ECFDF5;
+      --amber:        #F59E0B;
+      --amber-lt:     #FEF3C7;
+      --purple:       #7C3AED;
+      --purple-lt:    #F3E8FF;
+      --txt-h:        #111827;
+      --txt:          #374151;
+      --txt-s:        #6B7280;
+      --txt-m:        #9CA3AF;
+      --border:       #E5E7EB;
+      --shadow:       0 1px 4px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md:    0 4px 20px rgba(0,0,0,0.09);
+      --radius:       14px;
+      --tr:           0.22s ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--txt);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ===== 顶部导航栏 ===== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 10px rgba(0,0,0,0.06);
+    }
+
+    .nav-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 28px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    /* Logo */
+    .nav-logo {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--txt-h);
+      letter-spacing: -0.03em;
+      flex-shrink: 0;
+    }
+    .nav-logo em { color: var(--accent); font-style: normal; }
+
+    /* 桌面导航链接 */
+    .nav-links {
+      display: flex;
+      gap: 2px;
+      list-style: none;
+    }
+    .nav-links a {
+      display: block;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--txt-s);
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color var(--tr), background var(--tr);
+    }
+    .nav-links a:hover       { color: var(--accent); background: var(--accent-light); }
+    .nav-links a.active      { color: var(--accent); background: var(--accent-light); }
+
+    /* 汉堡菜单按钮（移动端） */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--txt-h); border-radius: 2px;
+      transition: all 0.28s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* 移动端下拉菜单 */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 58px; left: 0; right: 0;
+      background: rgba(255,255,255,0.97);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px 16px;
+      z-index: 199;
+      flex-direction: column;
+      gap: 2px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      display: block; padding: 11px 16px;
+      border-radius: 9px; font-size: 15px; font-weight: 500;
+      color: var(--txt-s); text-decoration: none; cursor: pointer;
+      transition: all var(--tr);
+    }
+    .mobile-menu a:hover, .mobile-menu a.active {
+      color: var(--accent); background: var(--accent-light);
+    }
+
+    /* ===== 主内容区 ===== */
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 28px 90px;
+    }
+
+    /* ===== 栏目切换动画 ===== */
+    .section { display: none; }
+    .section.active { display: block; animation: fadeUp 0.32s ease; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== 通用卡片与标题 ===== */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-header { margin-bottom: 26px; }
+    .section-title   { font-size: 25px; font-weight: 700; color: var(--txt-h); letter-spacing: -0.02em; }
+    .section-sub     { font-size: 14px; color: var(--txt-m); margin-top: 4px; }
+
+    .label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+    }
+    .label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ===== 首页 Hero ===== */
+    .hero {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 44px 40px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 24px;
+    }
+
+    /* 头像 */
+    .avatar-wrap { flex-shrink: 0; }
+
+    .avatar-ring {
+      width: 128px; height: 128px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 6px 28px rgba(59,125,216,0.28);
+      flex-shrink: 0;
+    }
+
+    .avatar-inner {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      background: linear-gradient(135deg, #3B7DD8 0%, #10B981 100%);
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* 头像占位：渐变背景 + 姓名首字 */
+    .avatar-placeholder {
+      font-size: 44px; font-weight: 800;
+      color: rgba(255,255,255,0.95);
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      letter-spacing: -2px;
+      user-select: none;
+    }
+
+    /* 头像图片（JS加载成功后显示） */
+    #avatarImg {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: none; /* 初始隐藏，JS成功后改为 block */
+      position: absolute; inset: 0;
+    }
+
+    /* 个人信息 */
+    .hero-info { flex: 1; min-width: 0; }
+
+    .hero-name {
+      font-size: 38px; font-weight: 800;
+      color: var(--txt-h); letter-spacing: -0.04em; line-height: 1.15;
+    }
+
+    .hero-title-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 10px;
+      background: var(--accent-light); color: var(--accent);
+      font-size: 13px; font-weight: 700;
+      padding: 4px 13px; border-radius: 20px;
+    }
+
+    .hero-tagline {
+      margin-top: 14px;
+      font-size: 14.5px; color: var(--txt-s);
+      line-height: 1.75; font-style: italic;
+      border-left: 3px solid var(--accent-light);
+      padding-left: 12px;
+    }
+
+    .hero-contacts {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      margin-top: 22px;
+    }
+    .contact-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; color: var(--txt-s);
+    }
+    .contact-item svg {
+      width: 15px; height: 15px;
+      color: var(--accent); flex-shrink: 0;
+    }
+
+    /* 下载简历按钮 */
+    .btn-resume {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 20px;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13.5px; font-weight: 600;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background var(--tr), transform var(--tr), box-shadow var(--tr);
+      box-shadow: 0 3px 12px rgba(59,125,216,0.30);
+    }
+    .btn-resume:hover {
+      background: #2d69c4;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(59,125,216,0.38);
+    }
+    .btn-resume svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* 关于我 */
+    .about-text { font-size: 14.5px; color: var(--txt-s); line-height: 1.85; }
+
+    /* 数据亮点卡片 */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 22px 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      border-top: 3px solid transparent;
+      transition: box-shadow var(--tr), transform var(--tr);
+    }
+    .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .stat-card:nth-child(1) { border-top-color: var(--accent); }
+    .stat-card:nth-child(2) { border-top-color: var(--accent-2); }
+    .stat-card:nth-child(3) { border-top-color: var(--amber); }
+    .stat-val   { font-size: 30px; font-weight: 800; color: var(--txt-h); line-height: 1; }
+    .stat-label { font-size: 12px; color: var(--txt-m); margin-top: 6px; }
+
+    /* ===== 工作经历时间线 ===== */
+    .timeline { display: flex; flex-direction: column; gap: 24px; }
+
+    .t-item {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 30px 32px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--accent);
+      transition: box-shadow var(--tr), transform var(--tr);
+    }
+    .t-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .t-item.green { border-left-color: var(--accent-2); }
+
+    .t-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 4px;
+    }
+    .t-role    { font-size: 19px; font-weight: 700; color: var(--txt-h); }
+    .t-company { font-size: 14px; font-weight: 600; color: var(--txt-s); margin-bottom: 10px; }
+
+    .t-date {
+      font-size: 12px; font-weight: 600;
+      color: var(--accent); background: var(--accent-light);
+      padding: 4px 11px; border-radius: 20px; white-space: nowrap;
+      height: fit-content;
+    }
+    .t-item.green .t-date { color: var(--accent-2); background: var(--accent-2-lt); }
+
+    .t-badge {
+      display: inline-block; font-size: 11.5px; font-weight: 600;
+      padding: 3px 10px; border-radius: 10px; margin-bottom: 18px;
+    }
+    .badge-gold   { background: var(--amber-lt); color: #92400E; }
+    .badge-blue   { background: #DBEAFE; color: #1D4ED8; }
+
+    .t-sub {
+      font-size: 12.5px; font-weight: 700;
+      color: var(--txt-h); margin: 18px 0 8px;
+      padding-left: 11px; border-left: 3px solid var(--accent);
+    }
+    .t-item.green .t-sub { border-left-color: var(--accent-2); }
+
+    .t-desc { font-size: 13.5px; color: var(--txt-s); line-height: 1.8; margin-bottom: 8px; }
+
+    .t-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .t-list li {
+      font-size: 13.5px; color: var(--txt-s); line-height: 1.75;
+      padding-left: 18px; position: relative;
+    }
+    .t-list li::before {
+      content: '◆'; position: absolute; left: 0;
+      color: var(--accent); font-size: 7px; top: 6px;
+    }
+    .t-item.green .t-list li::before { color: var(--accent-2); }
+
+    /* 成果高亮框 */
+    .result-box {
+      margin-top: 16px; padding: 14px 18px;
+      background: linear-gradient(135deg, #EBF5FF, #E0F2FE);
+      border-radius: 10px; border-left: 3px solid var(--accent);
+      font-size: 13.5px; color: #1E3A5F; line-height: 1.75;
+    }
+    .result-box strong { color: var(--accent); font-weight: 700; }
+    .t-item.green .result-box {
+      background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+      border-left-color: var(--accent-2); color: #064E3B;
+    }
+    .t-item.green .result-box strong { color: var(--accent-2); }
+
+    /* ===== 教育背景 ===== */
+    .edu-card {
+      background: var(--bg-card); border-radius: var(--radius);
+      padding: 34px 36px; box-shadow: var(--shadow-md);
+      border-top: 4px solid var(--accent);
+    }
+    .edu-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
+    }
+    .edu-school { font-size: 23px; font-weight: 800; color: var(--txt-h); }
+    .edu-major  { font-size: 15px; color: var(--txt-s); margin-top: 4px; }
+    .edu-date   {
+      font-size: 13px; font-weight: 600;
+      color: var(--accent); background: var(--accent-light);
+      padding: 5px 13px; border-radius: 20px; height: fit-content;
+    }
+
+    .gpa-row { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 28px; }
+
+    .gpa-card {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px; border-radius: 11px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    }
+    .gpa-val   { font-size: 24px; font-weight: 800; color: #fff; }
+    .gpa-lbl   { font-size: 12px; color: rgba(255,255,255,0.85); }
+
+    .rank-card {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px; border-radius: 11px;
+      background: var(--amber-lt); border: 1px solid #FDE68A;
+    }
+    .rank-val  { font-size: 22px; font-weight: 800; color: #92400E; }
+    .rank-lbl  { font-size: 12px; color: #92400E; opacity: 0.8; }
+
+    .course-title { font-size: 14px; font-weight: 700; color: var(--txt-h); margin-bottom: 14px; }
+    .courses-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    }
+    .course-item {
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--bg); border-radius: 9px; padding: 11px 16px;
+    }
+    .course-name  { font-size: 13px; color: var(--txt-s); }
+    .course-score { font-size: 15px; font-weight: 700; color: var(--accent); }
+
+    /* ===== 技能特长 ===== */
+    .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+
+    .skill-cat {
+      background: var(--bg-card); border-radius: var(--radius);
+      padding: 24px 26px; box-shadow: var(--shadow);
+    }
+    .skill-cat-hd {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; font-weight: 700; color: var(--txt-h);
+      margin-bottom: 15px;
+    }
+    .cat-icon {
+      width: 30px; height: 30px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0;
+    }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag {
+      font-size: 12.5px; font-weight: 500;
+      padding: 5px 12px; border-radius: 20px;
+      transition: transform var(--tr), box-shadow var(--tr);
+      cursor: default;
+    }
+    .tag:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+    .tag-b { background: var(--accent-light); color: var(--accent); }
+    .tag-g { background: var(--accent-2-lt); color: var(--accent-2); }
+    .tag-o { background: var(--amber-lt); color: #D97706; }
+    .tag-p { background: var(--purple-lt); color: var(--purple); }
+
+    .en-detail {
+      margin-top: 14px; background: var(--bg);
+      border-radius: 9px; padding: 12px 15px;
+      font-size: 13px; color: var(--txt-s); line-height: 1.65;
+    }
+    .cet-score { font-size: 22px; font-weight: 800; color: var(--accent); margin-right: 2px; }
+
+    /* ===== 荣誉证书 ===== */
+    .honors-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+
+    .honor-card {
+      background: var(--bg-card); border-radius: var(--radius);
+      padding: 24px 26px; box-shadow: var(--shadow);
+      display: flex; align-items: flex-start; gap: 16px;
+      transition: box-shadow var(--tr), transform var(--tr);
+    }
+    .honor-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+    .honor-icon {
+      width: 50px; height: 50px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .honor-body {}
+    .honor-title { font-size: 15.5px; font-weight: 700; color: var(--txt-h); margin-bottom: 6px; }
+    .honor-desc  { font-size: 13px; color: var(--txt-s); line-height: 1.65; }
+
+    /* ===== 作品集 ===== */
+    .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+
+    .pf-card {
+      background: var(--bg-card); border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: box-shadow var(--tr), transform var(--tr);
+    }
+    .pf-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+
+    /* Figma 预览嵌入区 */
+    .pf-embed {
+      position: relative; width: 100%; padding-top: 60%;
+      background: #1e1e2e; overflow: hidden;
+    }
+    .pf-embed iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      border: none;
+    }
+    /* 文档预览占位图 */
+    .pf-thumb {
+      width: 100%; height: 180px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px;
+      font-size: 52px;
+    }
+
+    .pf-body { padding: 22px 24px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+
+    .pf-type {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .pf-title { font-size: 17px; font-weight: 700; color: var(--txt-h); line-height: 1.35; }
+    .pf-desc  { font-size: 13px; color: var(--txt-s); line-height: 1.7; flex: 1; }
+
+    .pf-link {
+      display: inline-flex; align-items: center; gap: 7px;
+      margin-top: 4px; padding: 9px 18px;
+      background: var(--accent); color: #fff;
+      font-size: 13px; font-weight: 600;
+      border-radius: 8px; text-decoration: none;
+      transition: background var(--tr), transform var(--tr);
+      align-self: flex-start;
+    }
+    .pf-link:hover { background: #2c6bbf; transform: translateY(-1px); }
+    .pf-link.secondary {
+      background: transparent; color: var(--accent-2);
+      border: 1.5px solid var(--accent-2);
+    }
+    .pf-link.secondary:hover { background: var(--accent-2-lt); }
+
+    /* 文档链接组 */
+    .pf-docs-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--txt-m); margin-top: 14px; margin-bottom: 8px;
+    }
+    .pf-docs-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pf-doc-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 7px;
+      background: var(--bg); border: 1px solid var(--border);
+      font-size: 12.5px; font-weight: 600; color: var(--txt-s);
+      text-decoration: none;
+      transition: background var(--tr), color var(--tr), border-color var(--tr), transform var(--tr);
+    }
+    .pf-doc-btn:hover {
+      background: var(--accent-light); color: var(--accent);
+      border-color: var(--accent); transform: translateY(-1px);
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      main { padding: 16px 16px 72px; }
+
+      .hero {
+        flex-direction: column; align-items: center;
+        text-align: center; padding: 32px 22px; gap: 22px;
+      }
+      .hero-tagline { text-align: left; }
+      .hero-contacts { justify-content: center; }
+      .hero-name { font-size: 30px; }
+
+      .stats-row { grid-template-columns: repeat(3,1fr); gap: 10px; }
+      .stat-val  { font-size: 24px; }
+
+      .card, .t-item { padding: 20px; }
+
+      .edu-card { padding: 22px; }
+      .courses-grid { grid-template-columns: 1fr; }
+
+      .skills-grid      { grid-template-columns: 1fr; }
+      .honors-grid      { grid-template-columns: 1fr; }
+      .portfolio-grid   { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .hero-name { font-size: 26px; }
+      .avatar-ring { width: 108px; height: 108px; }
+      .avatar-placeholder { font-size: 38px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== 顶部导航栏 ===== -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">张恩慈</div>
+
+    <!-- 桌面导航 -->
+    <ul class="nav-links" id="navLinks">
+      <li><a onclick="show('home')"       data-s="home"       class="active">首页</a></li>
+      <li><a onclick="show('experience')" data-s="experience">工作经历</a></li>
+      <li><a onclick="show('education')"  data-s="education">教育背景</a></li>
+      <li><a onclick="show('skills')"     data-s="skills">技能特长</a></li>
+      <li><a onclick="show('honors')"     data-s="honors">荣誉证书</a></li>
+      <li><a onclick="show('portfolio')" data-s="portfolio">作品集</a></li>
+    </ul>
+
+    <!-- 汉堡按钮（移动端） -->
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- 移动端展开菜单 -->
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="show('home')"       data-s="home"       class="active">首页</a>
+  <a onclick="show('experience')" data-s="experience">工作经历</a>
+  <a onclick="show('education')"  data-s="education">教育背景</a>
+  <a onclick="show('skills')"     data-s="skills">技能特长</a>
+  <a onclick="show('honors')"     data-s="honors">荣誉证书</a>
+  <a onclick="show('portfolio')" data-s="portfolio">作品集</a>
+</div>
+
+<main>
+
+  <!-- ==================== 首页 ==================== -->
+  <section class="section active" id="section-home">
+
+    <!-- Hero 卡片 -->
+    <div class="hero">
+      <div class="avatar-wrap">
+        <div class="avatar-ring">
+          <div class="avatar-inner">
+            <div class="avatar-placeholder" id="avatarPH">张</div>
+            <img id="avatarImg" alt="张恩慈头像">
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-info">
+        <h1 class="hero-name">张恩慈</h1>
+        <div class="hero-title-badge">
+          <!-- 简洁图标 -->
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          产品经理
+        </div>
+        <p class="hero-tagline">「喜欢观察世界的记录者，致力于用微小的创造改变世界的产品人。」</p>
+        <div class="hero-contacts">
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.82h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.27v-.36z"/></svg>
+            18786713627
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            23301143@bjtu.edu.cn
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            北京市海淀区
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            21 岁
+          </div>
+        </div>
+        <a class="btn-resume" href="产品经理-张恩慈-北京交通大学.pdf" download="产品经理-张恩慈-北京交通大学.pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          下载简历
+        </a>
+      </div>
+    </div>
+
+    <!-- 关于我 -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="label">关于我</div>
+      <p class="about-text">
+        北京交通大学软件工程专业在读，GPA 3.9 / 4.0（专业排名第 3 / 184，前 2%），连续两年荣获国家奖学金。
+        具备扎实的技术基础与丰富的 AI 产品实战经验，曾主导美区 iOS 分榜 Top 30 应用多个核心 AI 功能从 0 到 1 落地，独立撰写 10+ 份 PRD，熟练运用 Prompt 工程与 A/B 测试驱动产品决策，带动功能渗透率与转化率显著提升。
+        熟练掌握 Figma、飞书、Python、SQL 等产品与开发工具，英语 CET-6 619 分，可流畅处理英文需求文档及海外竞品资料，善于在资源受限条件下推动高质量、按期交付。
+      </p>
+    </div>
+
+    <!-- 数据亮点 -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-val">3.9</div>
+        <div class="stat-label">GPA（满分 4.0 · 前 2%）</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">10+</div>
+        <div class="stat-label">独立撰写 PRD 文档数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">619</div>
+        <div class="stat-label">CET-6 英语成绩</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==================== 工作经历 ==================== -->
+  <section class="section" id="section-experience">
+    <div class="section-header">
+      <h2 class="section-title">工作 / 项目经历</h2>
+      <p class="section-sub">实习经历 · 按时间倒序排列</p>
+    </div>
+
+    <div class="timeline">
+
+      <!-- ---- 经历 1：SecretLisa ---- -->
+      <div class="t-item">
+        <div class="t-header">
+          <div>
+            <div class="t-role">AI 产品经理助理</div>
+            <div class="t-company">SecretLisa &nbsp;·&nbsp; AI Home Design</div>
+          </div>
+          <div class="t-date">2026 / 01 — 至今</div>
+        </div>
+        <div class="t-badge badge-gold">🏆 美区 iOS 分榜 Top 30</div>
+
+        <!-- 子模块 1 -->
+        <div class="t-sub">提示词工程体系化建设</div>
+        <p class="t-desc">针对室内装修核心功能的生图质量瓶颈，在旧模型成本受限条件下，分阶段系统性优化 Prompt：</p>
+        <ul class="t-list">
+          <li>第一阶段：通过目标拆解、模型特性调研、控制变量微调提示词，显著降低生图幻觉，提升生图质量；</li>
+          <li>第二阶段：针对旧框架中"每个风格 × 房型组合都需单独撰写 Prompt"的维护痛点，基于新模型从 0 到 1 重构提示词框架，将组合复杂度由 O(a × b) 降至 O(a + b)，新增房型仅需追加一段提示词即可复用全部风格。</li>
+        </ul>
+        <div class="result-box">
+          📊 新框架较线上原方案综合效果提升 <strong>19.2%</strong>，结构稳定性大幅提升 <strong>41%</strong>；上线后功能生图量提升 <strong>39.4%</strong>，点踩率下降 <strong>1%</strong>；并沉淀 Prompt 调优方法论，复用至其他多个功能。
+        </div>
+
+        <!-- 子模块 2 -->
+        <div class="t-sub">C 端 AI 新功能从 0 到 1 全流程落地</div>
+        <ul class="t-list">
+          <li>主导"Interior Decor（室内装饰）"与"Floor Plan（平面图转 3D）"等核心功能从 0 到 1 落地；</li>
+          <li>结合竞品拆解与海外社媒（TikTok / Reddit / YouTube 等）洞察，独立完成 <strong>10+ 份 PRD</strong> 撰写及交互全流程设计；</li>
+          <li>针对功能入口制定 A/B 测试方案以控制上线风险，协助推动产研测全生命周期交付。</li>
+        </ul>
+        <div class="result-box">
+          🚀 上线后两项功能生图量跃居全站第 <strong>3</strong> 和第 <strong>5</strong> 位（共 20 项功能），整体功能渗透率提升 <strong>5%</strong>，转化率提升 <strong>4.5%</strong>，成功验证用户真实需求并打造高频业务场景。
+        </div>
+
+        <!-- 子模块 3 -->
+        <div class="t-sub">竞品分析与模型选型</div>
+        <ul class="t-list">
+          <li><strong>产品侧：</strong>深度追踪海外核心竞品，拆解功能演进路径、交互体验与订阅付费套路，结合海外社媒热度评估市场潜力；累计交付数十份高质量竞品周报，敏锐捕捉并直接促成 Floor Plan 等高潜力功能内部立项；主动沉淀《竞品分析 SOP》，将调研流程标准化，提升团队复用效率。</li>
+          <li><strong>模型侧：</strong>主导底层图像生成模型选型调研，横向对比主流模型在成本、速度、效果与风格偏好上的差异，基于业务场景输出最优选型建议；熟练使用 Claude / Gemini / DeepSeek 等 LLM 辅助需求拆解、竞品信息结构化与 Prompt 评测提效。</li>
+        </ul>
+      </div>
+
+      <!-- ---- 经历 2：杭州私默科技 ---- -->
+      <div class="t-item green">
+        <div class="t-header">
+          <div>
+            <div class="t-role">产品经理</div>
+            <div class="t-company">杭州私默科技有限公司 &nbsp;·&nbsp; Pandora 掌上工作日志系统</div>
+          </div>
+          <div class="t-date">2025 / 02 — 2025 / 07</div>
+        </div>
+        <div class="t-badge badge-blue">📱 企业内部移动端协作工具</div>
+        <p class="t-desc">面向企业内部团队协作的移动端工作日志管理工具，解决信息分散、沟通流程低效及知识沉淀缺失的痛点。</p>
+
+        <div class="t-sub">需求分析与 PRD 撰写</div>
+        <ul class="t-list">
+          <li>将甲方初期零散需求转化为结构化的 <strong>8000+ 字 PRD</strong> 与原型图，详细定义任务管理、日志视图、AI 数据分析等 3 大模块共 <strong>20+ 个</strong>核心功能点；</li>
+          <li>基于开发资源限制，采用 P0 / P1 优先级划分机制锁定 MVP 范围，优先保障核心业务流程闭环。</li>
+        </ul>
+
+        <div class="t-sub">敏捷交付与用户验收管理</div>
+        <ul class="t-list">
+          <li>主动搭建飞书多维表格作为"缺陷与需求管理中台"，将 <strong>80+ 条</strong>零散反馈按"重要紧急矩阵"分级，并转译为研发可执行的标准任务；</li>
+          <li>实现缺陷转化与修复率达 <strong>90% 以上</strong>。</li>
+        </ul>
+
+        <div class="result-box">
+          ✅ 系统按期高质量交付，上线后迅速全量覆盖甲方业务团队；交付后通过内部问卷开展用户满意度调研，系统易用性好评率达 <strong>90% 以上</strong>。
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 教育背景 ==================== -->
+  <section class="section" id="section-education">
+    <div class="section-header">
+      <h2 class="section-title">教育背景</h2>
+      <p class="section-sub">本科在读</p>
+    </div>
+
+    <div class="edu-card">
+      <div class="edu-header">
+        <div>
+          <div class="edu-school">北京交通大学</div>
+          <div class="edu-major">软件工程 · 工学学士（本科）</div>
+        </div>
+        <div class="edu-date">2023 / 09 — 2027 / 06</div>
+      </div>
+
+      <div class="gpa-row">
+        <div class="gpa-card">
+          <div>
+            <div class="gpa-val">3.9 / 4.0</div>
+            <div class="gpa-lbl">GPA 学业成绩</div>
+          </div>
+        </div>
+        <div class="rank-card">
+          <div>
+            <div class="rank-val">3 / 184</div>
+            <div class="rank-lbl">专业排名（前 2%）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-title">核心课程成绩</div>
+      <div class="courses-grid">
+        <div class="course-item">
+          <span class="course-name">软件系统分析与设计</span>
+          <span class="course-score">91 分</span>
+        </div>
+        <div class="course-item">
+          <span class="course-name">数据库系统</span>
+          <span class="course-score">91 分</span>
+        </div>
+        <div class="course-item">
+          <span class="course-name">用户界面设计与评价</span>
+          <span class="course-score">93 分</span>
+        </div>
+        <div class="course-item">
+          <span class="course-name">项目管理与产品运维</span>
+          <span class="course-score">90 分</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 技能特长 ==================== -->
+  <section class="section" id="section-skills">
+    <div class="section-header">
+      <h2 class="section-title">技能特长</h2>
+      <p class="section-sub">硬技能与软技能综合展示</p>
+    </div>
+
+    <div class="skills-grid">
+
+      <div class="skill-cat">
+        <div class="skill-cat-hd">
+          <div class="cat-icon" style="background:var(--accent-light);">🛠️</div>
+          产品工具
+        </div>
+        <div class="tags">
+          <span class="tag tag-b">Figma</span>
+          <span class="tag tag-b">XMind</span>
+          <span class="tag tag-b">飞书</span>
+          <span class="tag tag-b">Git</span>
+          <span class="tag tag-b">PRD 撰写</span>
+          <span class="tag tag-b">原型设计</span>
+          <span class="tag tag-b">A/B 测试</span>
+          <span class="tag tag-b">需求优先级规划</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="skill-cat-hd">
+          <div class="cat-icon" style="background:var(--accent-2-lt);">💻</div>
+          编程与技术
+        </div>
+        <div class="tags">
+          <span class="tag tag-g">Python</span>
+          <span class="tag tag-g">SQL</span>
+          <span class="tag tag-g">数据库系统</span>
+          <span class="tag tag-g">软件工程</span>
+          <span class="tag tag-g">产研高效沟通</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="skill-cat-hd">
+          <div class="cat-icon" style="background:var(--amber-lt);">🤖</div>
+          AI 能力
+        </div>
+        <div class="tags">
+          <span class="tag tag-o">Prompt 工程</span>
+          <span class="tag tag-o">提示词框架重构</span>
+          <span class="tag tag-o">AI 模型效果评测</span>
+          <span class="tag tag-o">图像生成模型选型</span>
+          <span class="tag tag-o">Claude</span>
+          <span class="tag tag-o">Gemini</span>
+          <span class="tag tag-o">DeepSeek</span>
+          <span class="tag tag-o">竞品 AI 能力拆解</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="skill-cat-hd">
+          <div class="cat-icon" style="background:var(--purple-lt);">🌐</div>
+          语言能力
+        </div>
+        <div class="tags">
+          <span class="tag tag-p">英语 CET-6</span>
+          <span class="tag tag-p">英文文档阅读</span>
+          <span class="tag tag-p">英文写作</span>
+          <span class="tag tag-p">日常口语</span>
+        </div>
+        <div class="en-detail">
+          <span class="cet-score">619</span> 分 &nbsp;·&nbsp; 具备流畅的英文文档阅读及写作能力，可无障碍处理海外竞品资料与英文需求文档，日常口语表达良好。
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 荣誉证书 ==================== -->
+  <section class="section" id="section-honors">
+    <div class="section-header">
+      <h2 class="section-title">荣誉证书</h2>
+      <p class="section-sub">学业成就与奖项</p>
+    </div>
+
+    <div class="honors-grid">
+
+      <div class="honor-card">
+        <div class="honor-icon" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">🏅</div>
+        <div class="honor-body">
+          <div class="honor-title">国家奖学金（连续两年）</div>
+          <div class="honor-desc">连续两年荣获国家奖学金，为国家级最高荣誉奖学金，代表学业成绩与综合素质位居全国前列。</div>
+        </div>
+      </div>
+
+      <div class="honor-card">
+        <div class="honor-icon" style="background:linear-gradient(135deg,#EBF2FF,#BFDBFE);">📊</div>
+        <div class="honor-body">
+          <div class="honor-title">专业排名 3 / 184（前 2%）</div>
+          <div class="honor-desc">北京交通大学软件工程专业，184 名同学中排名第 3，成绩优异，学业能力突出。</div>
+        </div>
+      </div>
+
+      <div class="honor-card">
+        <div class="honor-icon" style="background:linear-gradient(135deg,#ECFDF5,#A7F3D0);">🎓</div>
+        <div class="honor-body">
+          <div class="honor-title">GPA 3.9 / 4.0</div>
+          <div class="honor-desc">在北京交通大学软件工程专业保持 3.9 / 4.0 的优异学业绩点，展现扎实的知识基础与持续钻研精神。</div>
+        </div>
+      </div>
+
+      <div class="honor-card">
+        <div class="honor-icon" style="background:linear-gradient(135deg,#F3E8FF,#DDD6FE);">🌐</div>
+        <div class="honor-body">
+          <div class="honor-title">大学英语六级 CET-6 619 分</div>
+          <div class="honor-desc">六级成绩 619 分，具备流畅的英文文档阅读、写作及日常口语能力，可无障碍对接海外产品资料与英文需求。</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 作品集 ==================== -->
+  <section class="section" id="section-portfolio">
+    <div class="section-header">
+      <h2 class="section-title">作品集</h2>
+      <p class="section-sub">交互设计原型 · 方法论文档</p>
+    </div>
+
+    <div class="portfolio-grid">
+
+      <!-- Figma 交互原型 -->
+      <div class="pf-card">
+        <div class="pf-embed">
+          <iframe
+            src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FKatcGwN3yUvXm4GOz7L52X%2F%25E8%2592%259C%25E9%25B8%259F%3Fpage-id%3D2%253A2%26node-id%3D62-501%26p%3Df%26viewport%3D195%252C194%252C0.39%26t%3DdyYF9uCiIfqCWdyf-1%26scaling%3Dscale-down%26content-scaling%3Dfixed%26starting-point-node-id%3D465%253A876"
+            allowfullscreen
+            loading="lazy"
+            title="Figma 交互原型预览"
+          ></iframe>
+        </div>
+        <div class="pf-body">
+          <div class="pf-type">🎨 &nbsp;Figma 交互原型</div>
+          <div class="pf-title">蒜鸟 · 情绪社交 App</div>
+          <div class="pf-desc">一款面向 Z 世代大学生的轻量化情绪社交产品，旨在解决高压环境下「熟人面前伪装，陌生人面前失语」的痛点。完整涵盖用户研究、竞品分析、需求文档与交互原型的全流程产品设计。</div>
+          <a class="pf-link" href="https://www.figma.com/proto/KatcGwN3yUvXm4GOz7L52X/%E8%92%9C%E9%B8%9F?page-id=2%3A2&node-id=62-501&p=f&viewport=195%2C194%2C0.39&t=dyYF9uCiIfqCWdyf-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=465%3A876" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            在 Figma 中查看原型
+          </a>
+          <div class="pf-docs-label">相关文档</div>
+          <div class="pf-docs-row">
+            <a class="pf-doc-btn" href="https://ucn828tu6waf.feishu.cn/docx/LJkyd3wqEojJ37x2frwcPCh5n0b" target="_blank" rel="noopener">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 3 17 8 12 8"/></svg>
+              用户研究报告
+            </a>
+            <a class="pf-doc-btn" href="https://ucn828tu6waf.feishu.cn/docx/LGuwdPkaRouAACxx1OkchP1Gnqh" target="_blank" rel="noopener">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 3 17 8 12 8"/></svg>
+              竞品分析报告
+            </a>
+            <a class="pf-doc-btn" href="https://ucn828tu6waf.feishu.cn/docx/QUkMdCtCto9ZQxx7pWCcLlnOngb" target="_blank" rel="noopener">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 3 17 8 12 8"/></svg>
+              需求文档
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 慢病用药小管家 -->
+      <div class="pf-card">
+        <div class="pf-thumb" style="background:linear-gradient(135deg,#FFF7ED 0%,#FFEDD5 50%,#FEF3C7 100%);">
+          <span>💊</span>
+          <span style="font-size:14px;font-weight:700;color:#D97706;letter-spacing:0.02em;">慢病用药小管家</span>
+        </div>
+        <div class="pf-body">
+          <div class="pf-type">💻 &nbsp;Vibe Coding </div>
+          <div class="pf-title">慢病用药小管家</div>
+          <div class="pf-desc">一款面向中老年慢性病患者的用药管理工具，通过「提醒 - 续方 - 履约」核心闭环，帮助用户养成规律服药习惯。</div>
+          <a class="pf-link" style="background:var(--amber);color:#fff;" href="https://goldpm.nocode.host" target="_blank" rel="noopener"
+             onmouseover="this.style.background='#D97706'" onmouseout="this.style.background='var(--amber)'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            访问
+          </a>
+        </div>
+      </div>
+
+      <!-- 简历快速生成器 -->
+      <div class="pf-card">
+        <div class="pf-thumb" style="background:linear-gradient(135deg,#F0F4FF 0%,#E8F5E9 50%,#EDE7F6 100%);">
+          <span>📄</span>
+          <span style="font-size:14px;font-weight:700;color:var(--purple);letter-spacing:0.02em;">简历快速生成器</span>
+        </div>
+        <div class="pf-body">
+          <div class="pf-type">💻 &nbsp;Vibe Coding </div>
+          <div class="pf-title">AI 简历快速生成器</div>
+          <div class="pf-desc">一款 AI 驱动的智能简历生成工具。将经历统一沉淀至「经历库」，投递时只需粘贴目标岗位 JD，系统自动计算匹配度、从经历库中筛选最相关的内容，一键生成高度契合 JD 的定制简历——告别反复手改，让每一份简历都恰到好处。</div>
+          <a class="pf-link" style="background:var(--purple);color:#fff;" href="https://resume-generator-seven-lilac.vercel.app" target="_blank" rel="noopener"
+             onmouseover="this.style.background='#6D28D9'" onmouseout="this.style.background='var(--purple)'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            访问线上产品
+          </a>
+        </div>
+      </div>
+
+      <!-- 笔记阅读器 NoteReader -->
+      <div class="pf-card">
+        <div class="pf-thumb" style="background:linear-gradient(135deg,#F0FDF4 0%,#DCFCE7 50%,#D1FAE5 100%);">
+          <span>📖</span>
+          <span style="font-size:14px;font-weight:700;color:var(--accent-2);letter-spacing:0.02em;">NoteReader 笔记阅读器</span>
+        </div>
+        <div class="pf-body">
+          <div class="pf-type">💻 &nbsp;Vibe Coding </div>
+          <div class="pf-title">笔记阅读器 NoteReader</div>
+          <div class="pf-desc">一款面向个人深度学习场景的文档阅读器，将 AI 问答与文档内容深度绑定，并支持将 AI 回答以锚点卡片的形式永久关联到原文，形成可复查的私人知识库。</div>
+          <a class="pf-link" style="background:var(--accent-2);color:#fff;" href="https://notereader-eggnite.vercel.app/library" target="_blank" rel="noopener"
+             onmouseover="this.style.background='#059669'" onmouseout="this.style.background='var(--accent-2)'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            访问线上产品
+          </a>
+        </div>
+      </div>
+
+      <!-- 飞书文档：提示词优化心得 -->
+      <div class="pf-card">
+        <div class="pf-thumb" style="background:linear-gradient(135deg,#EBF2FF 0%,#E0F2FE 50%,#ECFDF5 100%);">
+          <span>📝</span>
+          <span style="font-size:14px;font-weight:700;color:var(--accent);letter-spacing:0.02em;">Prompt 优化方法论</span>
+        </div>
+        <div class="pf-body">
+          <div class="pf-type">📄 &nbsp;飞书知识库文档</div>
+          <div class="pf-title">Prompt 调优方法论与实战心得</div>
+          <div class="pf-desc">在 SecretLisa 实习期间沉淀的 Prompt 工程方法论，系统梳理从问题拆解、变量控制、框架重构到效果评测的完整调优流程，可复用至同类 AI 产品功能场景。</div>
+          <a class="pf-link secondary" href="https://ucn828tu6waf.feishu.cn/wiki/RAerwlykHiPVVnkuYFPcmTCVn0E" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            查看完整文档
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  /* ===== 栏目切换逻辑 ===== */
+  function show(id) {
+    /* 隐藏所有栏目 */
+    document.querySelectorAll('.section').forEach(function(s) {
+      s.classList.remove('active');
+    });
+    /* 显示目标栏目 */
+    document.getElementById('section-' + id).classList.add('active');
+
+    /* 更新桌面导航高亮 */
+    document.querySelectorAll('#navLinks a').forEach(function(a) {
+      a.classList.toggle('active', a.dataset.s === id);
+    });
+
+    /* 更新移动端导航高亮 */
+    document.querySelectorAll('#mobileMenu a').forEach(function(a) {
+      a.classList.toggle('active', a.dataset.s === id);
+    });
+
+    /* 收起移动端菜单并回到顶部 */
+    closeMobileMenu();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ===== 移动端菜单切换 ===== */
+  function toggleMenu() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  function closeMobileMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  /* ===== 头像优先级探测函数 =====
+     按顺序尝试 avater.png → avatar.png → avatar.jpg → avatar.jpeg，
+     任意一个加载成功即设为头像，占位保持美观直到图片就绪。
+  */
+  function loadAvatar() {
+    var formats = ['avater.png', 'avatar.png', 'avatar.jpg', 'avatar.jpeg'];
+    var imgEl   = document.getElementById('avatarImg');
+    var phEl    = document.getElementById('avatarPH');
+    var idx     = 0;
+
+    function tryNext() {
+      if (idx >= formats.length) {
+        /* 所有格式均不存在，保留占位展示 */
+        return;
+      }
+      var probe = new Image();
+      probe.onload = function() {
+        /* 加载成功：显示图片，隐藏占位文字 */
+        imgEl.src = formats[idx];
+        imgEl.style.display = 'block';
+        phEl.style.display  = 'none';
+      };
+      probe.onerror = function() {
+        /* 当前格式失败，尝试下一个 */
+        idx++;
+        tryNext();
+      };
+      probe.src = formats[idx];
+    }
+
+    tryNext();
+  }
+
+  /* ===== 页面初始化 ===== */
+  document.addEventListener('DOMContentLoaded', function() {
+    loadAvatar();
+  });
+</script>
+</body>
+</html>
