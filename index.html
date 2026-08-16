@@ -1023,22 +1023,62 @@
     }
 
     .honors-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      overflow-y: visible;
+      scroll-snap-type: x mandatory;
+      scroll-padding: 12px;
+      padding: 18px 4px 32px;
+      cursor: grab;
+      user-select: none;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(20,20,20,.22) transparent;
+    }
+    .honors-grid::-webkit-scrollbar {
+      height: 8px;
+    }
+    .honors-grid::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .honors-grid::-webkit-scrollbar-thumb {
+      background: rgba(20,20,20,.18);
+      border-radius: 999px;
+    }
+    .honors-grid.is-dragging {
+      cursor: grabbing;
+      scroll-snap-type: none;
     }
     .honor-card {
-      min-height: 100%;
+      flex: 0 0 clamp(280px, 34vw, 430px);
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: rgba(255,253,248,.78);
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      scroll-snap-align: start;
+      cursor: zoom-in;
+      box-shadow: 0 22px 55px rgba(20,20,20,.08);
+      transform: rotate(var(--tilt, 0deg));
+      transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+    }
+    .honor-card:nth-child(1) { --tilt: -1.4deg; }
+    .honor-card:nth-child(2) { --tilt: 1.1deg; }
+    .honor-card:nth-child(3) { --tilt: -.7deg; }
+    .honor-card:nth-child(4) { --tilt: 1.5deg; }
+    .honor-card:nth-child(5) { --tilt: -1deg; }
+    .honor-card:nth-child(6) { --tilt: .8deg; }
+    .honor-card:hover,
+    .honor-card:focus-within {
+      transform: translateY(-8px) rotate(0deg);
+      box-shadow: 0 30px 70px rgba(20,20,20,.13);
     }
     .honor-card figure {
       margin: 0;
-      aspect-ratio: 1.42;
+      aspect-ratio: 1.36;
       background: #f1eee8;
       border-bottom: 1px solid var(--line);
       overflow: hidden;
@@ -1054,6 +1094,97 @@
       padding: 18px 20px 20px;
       font-size: 18px;
       line-height: 1.25;
+    }
+    .certificate-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1800;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(20,20,20,.42);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .28s ease;
+    }
+    .certificate-lightbox.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .certificate-panel {
+      width: min(960px, 100%);
+      max-height: 88vh;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: 0 36px 100px rgba(20,20,20,.28);
+      transform: translateY(18px) scale(.98);
+      transition: transform .32s var(--ease);
+    }
+    .certificate-lightbox.open .certificate-panel {
+      transform: translateY(0) scale(1);
+    }
+    .certificate-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 16px 12px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .certificate-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+    .certificate-close {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: rgba(255,253,248,.9);
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .certificate-image-wrap {
+      min-height: 0;
+      padding: 18px;
+      background: rgba(20,20,20,.04);
+    }
+    .certificate-image-wrap img {
+      display: block;
+      width: 100%;
+      max-height: calc(88vh - 112px);
+      object-fit: contain;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .page-transition {
+      position: fixed;
+      inset: 0;
+      z-index: 1700;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at var(--tx, 50%) var(--ty, 50%), rgba(255,82,22,.10), transparent 26%),
+        var(--paper);
+      clip-path: circle(0 at var(--tx, 50%) var(--ty, 50%));
+      opacity: 0;
+      transition: clip-path .46s var(--ease), opacity .2s ease;
+    }
+    .page-transition.is-active {
+      opacity: 1;
+      clip-path: circle(150% at var(--tx, 50%) var(--ty, 50%));
+    }
+    .page-transition.is-leaving {
+      opacity: 0;
+      clip-path: circle(150% at var(--tx, 50%) var(--ty, 50%));
+      transition: opacity .3s ease;
     }
 
     .contact-section {
@@ -1231,8 +1362,8 @@
       .ability-pill:nth-child(6) { left: 10%; bottom: 7%; }
       .ability-pill:nth-child(7) { right: 7%; bottom: 9%; }
       .ability-pill:nth-child(8) { right: 38%; top: 34%; }
-      .metric-grid,
-      .honors-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .honor-card { flex-basis: min(74vw, 380px); }
       .project-card,
       .project-card.featured,
       .project-card.side { grid-column: span 12; min-height: auto; }
@@ -1250,8 +1381,9 @@
       .stage-card.four { width: 142px; }
       .metric-grid,
       .gpa-row,
-      .course-grid,
-      .honors-grid { grid-template-columns: 1fr; }
+      .course-grid { grid-template-columns: 1fr; }
+      .honors-grid { gap: 16px; }
+      .honor-card { flex-basis: 82vw; }
       .about-card .mini-stat:nth-child(2) { grid-column: auto; }
       .about-stage-title { font-size: clamp(46px, 16vw, 72px); }
       .ability-pill:nth-child(2),
@@ -1267,6 +1399,7 @@
 </head>
 <body>
   <div class="cursor" aria-hidden="true"></div>
+  <div class="page-transition" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="#home" aria-label="回到首页"><span class="brand-mark">张</span><span>Enci Zhang</span></a>
     <nav class="nav-links" aria-label="主导航">
@@ -1465,12 +1598,12 @@
     <section id="honors">
       <div class="section-head reveal"><div class="eyebrow">04 / Honors</div><div><h2 class="section-title">荣誉证书</h2></div></div>
       <div class="honors-grid stagger">
-        <article class="honor-card"><figure><img src="honor-national-scholarship.jpg" alt="国家奖学金证书"></figure><h3>连续两年获国家奖学金</h3></article>
-        <article class="honor-card"><figure><img src="honor-software-contest.jpg" alt="全国大学生软件创新大赛获奖证书"></figure><h3>大学生软件创新大赛全国三等奖</h3></article>
-        <article class="honor-card"><figure><img src="honor-ccf-paper.jpg" alt="CCF 论文信息截图"></figure><h3>CCF 三区论文一作</h3></article>
-        <article class="honor-card"><figure><img src="honor-national-innovation.jpg" alt="国家级大创项目证书"></figure><h3>国家级大创项目</h3></article>
-        <article class="honor-card"><figure><img src="honor-city-innovation.jpg" alt="市级大创项目证书"></figure><h3>市级大创项目</h3></article>
-        <article class="honor-card"><figure><img src="honor-english-contest.jpg" alt="全国大学生英语竞赛获奖证书"></figure><h3>全国大学生英语竞赛三等奖</h3></article>
+        <article class="honor-card" tabindex="0"><figure><img src="honor-national-scholarship.jpg" alt="国家奖学金证书"></figure><h3>连续两年获国家奖学金</h3></article>
+        <article class="honor-card" tabindex="0"><figure><img src="honor-software-contest.jpg" alt="全国大学生软件创新大赛获奖证书"></figure><h3>大学生软件创新大赛全国三等奖</h3></article>
+        <article class="honor-card" tabindex="0"><figure><img src="honor-ccf-paper.jpg" alt="CCF 论文信息截图"></figure><h3>CCF 三区论文一作</h3></article>
+        <article class="honor-card" tabindex="0"><figure><img src="honor-national-innovation.jpg" alt="国家级大创项目证书"></figure><h3>国家级大创项目</h3></article>
+        <article class="honor-card" tabindex="0"><figure><img src="honor-city-innovation.jpg" alt="市级大创项目证书"></figure><h3>市级大创项目</h3></article>
+        <article class="honor-card" tabindex="0"><figure><img src="honor-english-contest.jpg" alt="全国大学生英语竞赛获奖证书"></figure><h3>全国大学生英语竞赛三等奖</h3></article>
       </div>
     </section>
 
@@ -1593,6 +1726,138 @@
         pill.addEventListener('pointerleave', function() {
           pill.style.transform = '';
         });
+      });
+    })();
+
+    (function pageTransitions() {
+      var overlay = document.querySelector('.page-transition');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!overlay) return;
+
+      function closeMobileNav() {
+        if (!menuButton || !mobilePanel) return;
+        menuButton.setAttribute('aria-expanded', 'false');
+        mobilePanel.classList.remove('open');
+      }
+
+      document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+        link.addEventListener('click', function(event) {
+          var href = link.getAttribute('href');
+          if (!href || href === '#') return;
+          var target = document.querySelector(href);
+          if (!target) return;
+          event.preventDefault();
+          closeMobileNav();
+
+          if (reduceMotion) {
+            target.scrollIntoView({ behavior: 'auto', block: 'start' });
+            history.pushState(null, '', href);
+            return;
+          }
+
+          var rect = link.getBoundingClientRect();
+          var x = event.clientX || rect.left + rect.width / 2;
+          var y = event.clientY || rect.top + rect.height / 2;
+          overlay.style.setProperty('--tx', x + 'px');
+          overlay.style.setProperty('--ty', y + 'px');
+          overlay.classList.remove('is-leaving');
+          overlay.classList.add('is-active');
+
+          window.setTimeout(function() {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.pushState(null, '', href);
+            overlay.classList.add('is-leaving');
+          }, 230);
+          window.setTimeout(function() {
+            overlay.classList.remove('is-active', 'is-leaving');
+          }, 680);
+        });
+      });
+    })();
+
+    (function honorFilm() {
+      var film = document.querySelector('.honors-grid');
+      if (!film) return;
+      var startX = 0;
+      var startScroll = 0;
+      var moved = false;
+      var dragging = false;
+
+      var lightbox = document.createElement('div');
+      lightbox.className = 'certificate-lightbox';
+      lightbox.setAttribute('role', 'dialog');
+      lightbox.setAttribute('aria-modal', 'true');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightbox.innerHTML = '<div class="certificate-panel"><div class="certificate-topbar"><h3 class="certificate-title"></h3><button class="certificate-close" type="button" aria-label="关闭证书预览">×</button></div><div class="certificate-image-wrap"><img alt=""></div></div>';
+      document.body.appendChild(lightbox);
+
+      var lightboxTitle = lightbox.querySelector('.certificate-title');
+      var lightboxImage = lightbox.querySelector('img');
+      var closeButton = lightbox.querySelector('.certificate-close');
+
+      function openCertificate(card) {
+        var img = card.querySelector('img');
+        var title = card.querySelector('h3');
+        if (!img || !title) return;
+        lightboxTitle.textContent = title.textContent;
+        lightboxImage.src = img.getAttribute('src');
+        lightboxImage.alt = img.getAttribute('alt') || title.textContent;
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        closeButton.focus();
+      }
+
+      function closeCertificate() {
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden', 'true');
+      }
+
+      film.addEventListener('pointerdown', function(event) {
+        if (event.button !== 0) return;
+        dragging = true;
+        moved = false;
+        startX = event.clientX;
+        startScroll = film.scrollLeft;
+        film.classList.add('is-dragging');
+        film.setPointerCapture(event.pointerId);
+      });
+
+      film.addEventListener('pointermove', function(event) {
+        if (!dragging) return;
+        var delta = event.clientX - startX;
+        if (Math.abs(delta) > 4) moved = true;
+        film.scrollLeft = startScroll - delta;
+      });
+
+      function endDrag(event) {
+        if (!dragging) return;
+        dragging = false;
+        film.classList.remove('is-dragging');
+        if (film.hasPointerCapture(event.pointerId)) film.releasePointerCapture(event.pointerId);
+      }
+
+      film.addEventListener('pointerup', endDrag);
+      film.addEventListener('pointercancel', endDrag);
+      film.addEventListener('click', function(event) {
+        var card = event.target.closest('.honor-card');
+        if (!card || moved) {
+          moved = false;
+          return;
+        }
+        openCertificate(card);
+      });
+      film.addEventListener('keydown', function(event) {
+        var card = event.target.closest('.honor-card');
+        if (!card || (event.key !== 'Enter' && event.key !== ' ')) return;
+        event.preventDefault();
+        openCertificate(card);
+      });
+      closeButton.addEventListener('click', closeCertificate);
+      lightbox.addEventListener('click', function(event) {
+        if (event.target === lightbox) closeCertificate();
+      });
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') closeCertificate();
       });
     })();
 
