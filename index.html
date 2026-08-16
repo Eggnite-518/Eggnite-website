@@ -363,6 +363,36 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: opacity .42s var(--ease), transform .42s var(--ease);
+      transform-origin: center;
+      backface-visibility: hidden;
+    }
+    .stage-card figcaption {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background: linear-gradient(135deg, #fff8e2, #efd8da 54%, #d6e5df);
+      color: #001b74;
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(24px, 2.5vw, 38px);
+      font-style: italic;
+      font-weight: 900;
+      line-height: 1.08;
+      text-align: center;
+      opacity: 0;
+      transform: rotateY(180deg) scale(.94);
+      transition: opacity .42s var(--ease), transform .42s var(--ease);
+      backface-visibility: hidden;
+    }
+    .stage-card:hover img {
+      opacity: .08;
+      transform: rotateY(-180deg) scale(1.04);
+    }
+    .stage-card:hover figcaption {
+      opacity: 1;
+      transform: rotateY(0) scale(1);
     }
     .stage-card .card-face {
       width: 100%;
@@ -539,7 +569,9 @@
       white-space: nowrap;
       opacity: 0;
       filter: blur(8px);
-      transition: opacity .56s var(--ease), filter .56s var(--ease);
+      translate: 0 0;
+      scale: 1;
+      transition: opacity .56s var(--ease), filter .56s var(--ease), translate .32s var(--ease), scale .32s var(--ease);
     }
     .about-stage.in-view .about-stage-title {
       opacity: 1;
@@ -558,12 +590,16 @@
     .about-stage.in-view .ability-pill:nth-child(6) { transition-delay: 1.14s; }
     .about-stage.in-view .ability-pill:nth-child(7) { transition-delay: 1.24s; }
     .about-stage.in-view .ability-pill:nth-child(8) { transition-delay: 1.34s; }
-    .ability-pill:nth-child(1) { left: 7%; top: 22%; transform: rotate(8deg); }
-    .ability-pill:nth-child(2) { left: 30%; top: 0; transform: rotate(-9deg); }
-    .ability-pill:nth-child(3) { right: 8%; top: 18%; transform: rotate(-8deg); }
-    .ability-pill:nth-child(4) { left: 3%; bottom: 22%; transform: rotate(-7deg); }
-    .ability-pill:nth-child(5) { right: 4%; bottom: 25%; transform: rotate(8deg); }
-    .ability-pill:nth-child(6) { left: 33%; bottom: 4%; transform: rotate(-4deg); }
+    .ability-pill:nth-child(1) { left: 7%; top: 22%; transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0) rotate(8deg); }
+    .ability-pill:nth-child(2) { left: 30%; top: 0; transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0) rotate(-9deg); }
+    .ability-pill:nth-child(3) { right: 8%; top: 18%; transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0) rotate(-8deg); }
+    .ability-pill:nth-child(4) { left: 3%; bottom: 22%; transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0) rotate(-7deg); }
+    .ability-pill:nth-child(5) { right: 4%; bottom: 25%; transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0) rotate(8deg); }
+    .ability-pill:nth-child(6) { left: 33%; bottom: 4%; transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0) rotate(-4deg); }
+    .ability-pill:hover {
+      translate: 0 -12px;
+      scale: 1.04;
+    }
     .about-info-grid {
       display: grid;
       grid-template-columns: minmax(0, .95fr) minmax(0, 1.25fr);
@@ -722,6 +758,42 @@
       color: var(--muted);
       font-size: 14px;
       line-height: 1.85;
+    }
+    .project-process {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      margin-top: 0;
+      transform: translateY(10px);
+      transition: max-height .42s var(--ease), opacity .32s ease, margin-top .32s ease, transform .42s var(--ease);
+    }
+    .project-card:hover .project-process,
+    .project-card:focus-within .project-process {
+      max-height: 220px;
+      opacity: 1;
+      margin-top: 16px;
+      transform: translateY(0);
+    }
+    .process-step {
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(247,245,241,.72);
+    }
+    .process-step b {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 12px;
+    }
+    .process-step span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
     }
     .project-actions {
       display: flex;
@@ -1169,6 +1241,9 @@
       .hero h1 { font-size: clamp(46px, 15vw, 64px); }
       .hero-note { font-size: 13px; }
       .button { min-height: 48px; padding: 0 18px; font-size: 14px; }
+      .project-process { grid-template-columns: 1fr; }
+      .project-card:hover .project-process,
+      .project-card:focus-within .project-process { max-height: 420px; }
       .stage-card.one,
       .stage-card.two,
       .stage-card.three,
@@ -1219,18 +1294,23 @@
         <div class="hero-visual" aria-hidden="true">
           <figure class="stage-card one" data-speed="-0.16" data-rotate="-22">
             <img src="avater.png" alt="">
+            <figcaption>观察世界</figcaption>
           </figure>
           <figure class="stage-card two" data-speed="0.14" data-rotate="29">
             <img src="hero-travel.jpg" alt="">
+            <figcaption>保持好奇</figcaption>
           </figure>
           <figure class="stage-card three" data-speed="0.1" data-rotate="-15">
             <img src="hero-hanfu.jpg" alt="">
+            <figcaption>热爱表达</figcaption>
           </figure>
           <figure class="stage-card four" data-speed="-0.12" data-rotate="13">
             <img src="hero-ukulele.jpg" alt="">
+            <figcaption>感知生活</figcaption>
           </figure>
           <figure class="stage-card five" data-speed="0.08" data-rotate="-10">
             <img src="hero-campus.jpg" alt="">
+            <figcaption>持续成长</figcaption>
           </figure>
         </div>
       </div>
@@ -1303,6 +1383,7 @@
             <div class="project-meta"><span>Flutter App · Android</span><span>01</span></div>
             <h3 class="project-title">Oddly — 你的潜意识侦探</h3>
             <p class="project-desc">一款帮你捕捉奇思妙想、探索潜意识的 AI 反思工具。通过苏格拉底式追问深挖想法根源，结合 11 种心理学框架生成洞察卡片，并在 Mirror 层跨记录识别重复出现的认知模式与深层「暗流」——它不是日记，是一面温和映出水面之下的你的镜子。数据全部本地存储，无账号体系，完全私密。</p>
+            <div class="project-process"><div class="process-step"><b>问题</b><span>碎片想法难以沉淀</span></div><div class="process-step"><b>动作</b><span>设计追问与洞察卡片</span></div><div class="process-step"><b>结果</b><span>形成私密反思工具</span></div></div>
             <div class="project-actions"><a class="text-link" href="https://github.com/Eggnite-518/Oddly" target="_blank" rel="noopener">查看 GitHub</a></div>
           </div>
         </article>
@@ -1312,28 +1393,29 @@
             <div class="project-meta"><span>Figma 交互原型</span><span>02</span></div>
             <h3 class="project-title">蒜鸟 · 情绪社交 App</h3>
             <p class="project-desc">一款面向 Z 世代大学生的轻量化情绪社交产品，旨在解决高压环境下「熟人面前伪装，陌生人面前失语」的痛点。完整涵盖用户研究、竞品分析、需求文档与交互原型的全流程产品设计。</p>
+            <div class="project-process"><div class="process-step"><b>问题</b><span>情绪表达缺少出口</span></div><div class="process-step"><b>动作</b><span>完成调研与原型设计</span></div><div class="process-step"><b>结果</b><span>沉淀完整产品方案</span></div></div>
             <div class="project-actions"><a class="text-link" href="https://www.figma.com/proto/KatcGwN3yUvXm4GOz7L52X/%E8%92%9C%E9%B8%9F?page-id=2%3A2&node-id=62-501&p=f&viewport=195%2C194%2C0.39&t=dyYF9uCiIfqCWdyf-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=465%3A876" target="_blank" rel="noopener">查看原型</a><a class="text-link" href="https://ucn828tu6waf.feishu.cn/docx/LJkyd3wqEojJ37x2frwcPCh5n0b" target="_blank" rel="noopener">用户研究</a><a class="text-link" href="https://ucn828tu6waf.feishu.cn/docx/LGuwdPkaRouAACxx1OkchP1Gnqh" target="_blank" rel="noopener">竞品分析</a><a class="text-link" href="https://ucn828tu6waf.feishu.cn/docx/QUkMdCtCto9ZQxx7pWCcLlnOngb" target="_blank" rel="noopener">需求文档</a></div>
           </div>
         </article>
         <article class="project-card">
           <div class="project-media"><div class="project-art tone-wine" data-mark="CV"><span>AI 简历快速生成器</span></div></div>
-          <div class="project-body"><div class="project-meta"><span>Vibe Coding</span><span>03</span></div><h3 class="project-title">AI 简历快速生成器</h3><p class="project-desc">一款 AI 驱动的智能简历生成工具。将经历统一沉淀至「经历库」，投递时只需粘贴目标岗位 JD，系统自动计算匹配度、从经历库中筛选最相关的内容，一键生成高度契合 JD 的定制简历——告别反复手改，让每一份简历都恰到好处。</p><div class="project-actions"><a class="text-link" href="https://resume-generator-seven-lilac.vercel.app" target="_blank" rel="noopener">访问线上产品</a></div></div>
+          <div class="project-body"><div class="project-meta"><span>Vibe Coding</span><span>03</span></div><h3 class="project-title">AI 简历快速生成器</h3><p class="project-desc">一款 AI 驱动的智能简历生成工具。将经历统一沉淀至「经历库」，投递时只需粘贴目标岗位 JD，系统自动计算匹配度、从经历库中筛选最相关的内容，一键生成高度契合 JD 的定制简历——告别反复手改，让每一份简历都恰到好处。</p><div class="project-process"><div class="process-step"><b>问题</b><span>简历定制反复手改</span></div><div class="process-step"><b>动作</b><span>匹配 JD 筛选经历</span></div><div class="process-step"><b>结果</b><span>生成定制化简历</span></div></div><div class="project-actions"><a class="text-link" href="https://resume-generator-seven-lilac.vercel.app" target="_blank" rel="noopener">访问线上产品</a></div></div>
         </article>
         <article class="project-card">
           <div class="project-media"><div class="project-art tone-sky" data-mark="AI"><span>NoteReader 笔记阅读器</span></div></div>
-          <div class="project-body"><div class="project-meta"><span>Vibe Coding</span><span>04</span></div><h3 class="project-title">笔记阅读器 NoteReader</h3><p class="project-desc">一款面向个人深度学习场景的文档阅读器，将 AI 问答与文档内容深度绑定，并支持将 AI 回答以锚点卡片的形式永久关联到原文，形成可复查的私人知识库。</p><div class="project-actions"><a class="text-link" href="https://notereader-eggnite.vercel.app/library" target="_blank" rel="noopener">访问线上产品</a></div></div>
+          <div class="project-body"><div class="project-meta"><span>Vibe Coding</span><span>04</span></div><h3 class="project-title">笔记阅读器 NoteReader</h3><p class="project-desc">一款面向个人深度学习场景的文档阅读器，将 AI 问答与文档内容深度绑定，并支持将 AI 回答以锚点卡片的形式永久关联到原文，形成可复查的私人知识库。</p><div class="project-process"><div class="process-step"><b>问题</b><span>AI 回答难以回溯</span></div><div class="process-step"><b>动作</b><span>绑定原文锚点卡片</span></div><div class="process-step"><b>结果</b><span>形成可复查知识库</span></div></div><div class="project-actions"><a class="text-link" href="https://notereader-eggnite.vercel.app/library" target="_blank" rel="noopener">访问线上产品</a></div></div>
         </article>
         <article class="project-card">
           <div class="project-media"><div class="project-art tone-gold" data-mark="Rx"><span>慢病用药小管家</span></div></div>
-          <div class="project-body"><div class="project-meta"><span>Vibe Coding</span><span>05</span></div><h3 class="project-title">慢病用药小管家</h3><p class="project-desc">一款面向中老年慢性病患者的用药管理工具，通过「提醒 - 续方 - 履约」核心闭环，帮助用户养成规律服药习惯。</p><div class="project-actions"><a class="text-link" href="https://goldpm.nocode.host" target="_blank" rel="noopener">访问</a></div></div>
+          <div class="project-body"><div class="project-meta"><span>Vibe Coding</span><span>05</span></div><h3 class="project-title">慢病用药小管家</h3><p class="project-desc">一款面向中老年慢性病患者的用药管理工具，通过「提醒 - 续方 - 履约」核心闭环，帮助用户养成规律服药习惯。</p><div class="project-process"><div class="process-step"><b>问题</b><span>慢病用药依从性低</span></div><div class="process-step"><b>动作</b><span>设计提醒续方闭环</span></div><div class="process-step"><b>结果</b><span>强化规律服药习惯</span></div></div><div class="project-actions"><a class="text-link" href="https://goldpm.nocode.host" target="_blank" rel="noopener">访问</a></div></div>
         </article>
         <article class="project-card">
           <div class="project-media"><div class="project-art tone-moss" data-mark="PM"><span>Prompt 调优方法论</span></div></div>
-          <div class="project-body"><div class="project-meta"><span>飞书知识库文档</span><span>06</span></div><h3 class="project-title">Prompt 调优方法论与实战心得</h3><p class="project-desc">在 SecretLisa 实习期间沉淀的 Prompt 工程方法论，系统梳理从问题拆解、变量控制、框架重构到效果评测的完整调优流程，可复用至同类 AI 产品功能场景。</p><div class="project-actions"><a class="text-link" href="https://ucn828tu6waf.feishu.cn/wiki/RAerwlykHiPVVnkuYFPcmTCVn0E" target="_blank" rel="noopener">查看完整文档</a></div></div>
+          <div class="project-body"><div class="project-meta"><span>飞书知识库文档</span><span>06</span></div><h3 class="project-title">Prompt 调优方法论与实战心得</h3><p class="project-desc">在 SecretLisa 实习期间沉淀的 Prompt 工程方法论，系统梳理从问题拆解、变量控制、框架重构到效果评测的完整调优流程，可复用至同类 AI 产品功能场景。</p><div class="project-process"><div class="process-step"><b>问题</b><span>Prompt 效果不稳定</span></div><div class="process-step"><b>动作</b><span>拆解变量与评测流程</span></div><div class="process-step"><b>结果</b><span>沉淀可复用方法论</span></div></div><div class="project-actions"><a class="text-link" href="https://ucn828tu6waf.feishu.cn/wiki/RAerwlykHiPVVnkuYFPcmTCVn0E" target="_blank" rel="noopener">查看完整文档</a></div></div>
         </article>
         <article class="project-card">
           <div class="project-media"><div class="project-art tone-coral" data-mark="V"><span>AI 生视频 Prompt 心得</span></div></div>
-          <div class="project-body"><div class="project-meta"><span>飞书知识库文档</span><span>07</span></div><h3 class="project-title">AI 生视频提示词实战心得</h3><p class="project-desc">深入拆解 AI 视频生成的提示词写作逻辑，涵盖镜头语言、运镜描述、风格控制与负向提示词运用等核心技巧，沉淀可直接复用的提示词模版与踩坑经验，帮助快速出圈高质量 AI 视频。</p><div class="project-actions"><a class="text-link" href="https://ucn828tu6waf.feishu.cn/wiki/NvzewmDzwiFfc6kYmwJcZ8k7nsq" target="_blank" rel="noopener">查看完整文档</a></div></div>
+          <div class="project-body"><div class="project-meta"><span>飞书知识库文档</span><span>07</span></div><h3 class="project-title">AI 生视频提示词实战心得</h3><p class="project-desc">深入拆解 AI 视频生成的提示词写作逻辑，涵盖镜头语言、运镜描述、风格控制与负向提示词运用等核心技巧，沉淀可直接复用的提示词模版与踩坑经验，帮助快速出圈高质量 AI 视频。</p><div class="project-process"><div class="process-step"><b>问题</b><span>视频提示词难复用</span></div><div class="process-step"><b>动作</b><span>拆解镜头与风格控制</span></div><div class="process-step"><b>结果</b><span>沉淀提示词模板</span></div></div><div class="project-actions"><a class="text-link" href="https://ucn828tu6waf.feishu.cn/wiki/NvzewmDzwiFfc6kYmwJcZ8k7nsq" target="_blank" rel="noopener">查看完整文档</a></div></div>
         </article>
       </div>
     </section>
@@ -1485,6 +1567,33 @@
       update();
       window.addEventListener('scroll', requestUpdate, { passive: true });
       window.addEventListener('resize', requestUpdate);
+    })();
+
+    (function abilityMagnet() {
+      var pills = Array.from(document.querySelectorAll('.ability-pill'));
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (!pills.length || reduceMotion.matches || !window.matchMedia('(pointer: fine)').matches) return;
+      var rotations = ['8deg', '-9deg', '-8deg', '-7deg', '8deg', '-4deg'];
+
+      function setPillTransform(pill, index, x, y) {
+        pill.style.transform = 'translate3d(' + x.toFixed(2) + 'px, ' + y.toFixed(2) + 'px, 0) rotate(' + (rotations[index] || '0deg') + ') scale(1.04)';
+      }
+      pills.forEach(function(pill, index) {
+        pill.addEventListener('pointerenter', function() {
+          setPillTransform(pill, index, 0, -12);
+        });
+        pill.addEventListener('pointermove', function(event) {
+          var rect = pill.getBoundingClientRect();
+          var centerX = rect.left + rect.width / 2;
+          var centerY = rect.top + rect.height / 2;
+          var x = Math.max(-18, Math.min(18, (event.clientX - centerX) * .18));
+          var y = -12 + Math.max(-10, Math.min(10, (event.clientY - centerY) * .18));
+          setPillTransform(pill, index, x, y);
+        });
+        pill.addEventListener('pointerleave', function() {
+          pill.style.transform = '';
+        });
+      });
     })();
 
     var observer = new IntersectionObserver(function(entries) {
