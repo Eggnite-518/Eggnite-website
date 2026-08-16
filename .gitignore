@@ -1,0 +1,6 @@
+.DS_Store
+qa-*.png
+index.*wrong*.html
+index.rebuilt-*.html
+design-qa.md
+artemis-reference-frames/
