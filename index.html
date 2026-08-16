@@ -207,6 +207,7 @@
       scroll-margin-top: 132px;
     }
     .section-head {
+      position: relative;
       display: grid;
       grid-template-columns: 150px minmax(0, 1fr);
       gap: 22px;
@@ -214,6 +215,39 @@
       margin-bottom: 32px;
       border-top: 1px solid var(--line);
       padding-top: 22px;
+      overflow: hidden;
+    }
+    .section-head::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 150px;
+      width: 46%;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(255,82,22,.12), transparent);
+      opacity: 0;
+      transform: translateX(-125%) skewX(-12deg);
+    }
+    section.section-cue .section-head::after {
+      animation: sectionSweep 1.05s var(--ease);
+    }
+    section:target .section-head::after,
+    #about:has(#about-education:target) .section-head::after {
+      animation: sectionSweep 1.05s var(--ease);
+    }
+    section.section-cue .section-title {
+      animation: titleCue .82s var(--ease);
+    }
+    section:target .section-title,
+    #about:has(#about-education:target) .section-title {
+      animation: titleCue .82s var(--ease);
+    }
+    .hero.section-cue .hero-copy {
+      animation: heroCue .82s var(--ease);
+    }
+    .hero:target .hero-copy {
+      animation: heroCue .82s var(--ease);
     }
     .eyebrow {
       color: var(--soft);
@@ -441,6 +475,21 @@
     @keyframes cardArrive {
       from { opacity: 0; transform: translateY(80px) rotate(0deg) scale(.78); filter: blur(12px); }
       to { opacity: 1; }
+    }
+    @keyframes sectionSweep {
+      0% { opacity: 0; transform: translateX(-125%) skewX(-12deg); }
+      24% { opacity: 1; }
+      100% { opacity: 0; transform: translateX(210%) skewX(-12deg); }
+    }
+    @keyframes titleCue {
+      0% { transform: translateY(12px); }
+      52% { transform: translateY(-4px); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes heroCue {
+      0% { transform: translateY(14px) scale(.99); }
+      58% { transform: translateY(-5px) scale(1.005); }
+      100% { transform: translateY(0) scale(1); }
     }
 
     .marquee {
@@ -1165,28 +1214,6 @@
       background: #fff;
     }
 
-    .page-transition {
-      position: fixed;
-      inset: 0;
-      z-index: 1700;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at var(--tx, 50%) var(--ty, 50%), rgba(255,82,22,.10), transparent 26%),
-        var(--paper);
-      clip-path: circle(0 at var(--tx, 50%) var(--ty, 50%));
-      opacity: 0;
-      transition: clip-path .46s var(--ease), opacity .2s ease;
-    }
-    .page-transition.is-active {
-      opacity: 1;
-      clip-path: circle(150% at var(--tx, 50%) var(--ty, 50%));
-    }
-    .page-transition.is-leaving {
-      opacity: 0;
-      clip-path: circle(150% at var(--tx, 50%) var(--ty, 50%));
-      transition: opacity .3s ease;
-    }
-
     .contact-section {
       width: min(1120px, calc(100% - 40px));
       margin: 0 auto 42px;
@@ -1399,7 +1426,6 @@
 </head>
 <body>
   <div class="cursor" aria-hidden="true"></div>
-  <div class="page-transition" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="#home" aria-label="回到首页"><span class="brand-mark">张</span><span>Enci Zhang</span></a>
     <nav class="nav-links" aria-label="主导航">
@@ -1729,15 +1755,27 @@
       });
     })();
 
-    (function pageTransitions() {
-      var overlay = document.querySelector('.page-transition');
+    (function sectionJumpCue() {
       var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!overlay) return;
+      var cueTimer = 0;
 
       function closeMobileNav() {
         if (!menuButton || !mobilePanel) return;
+        menuButton.classList.remove('open');
         menuButton.setAttribute('aria-expanded', 'false');
         mobilePanel.classList.remove('open');
+      }
+
+      function cueSection(target) {
+        var cueTarget = target.closest('section') || target;
+        window.clearTimeout(cueTimer);
+        document.querySelectorAll('.section-cue').forEach(function(section) {
+          section.classList.remove('section-cue');
+        });
+        cueTarget.classList.add('section-cue');
+        cueTimer = window.setTimeout(function() {
+          cueTarget.classList.remove('section-cue');
+        }, 1250);
       }
 
       document.querySelectorAll('a[href^="#"]').forEach(function(link) {
@@ -1746,31 +1784,8 @@
           if (!href || href === '#') return;
           var target = document.querySelector(href);
           if (!target) return;
-          event.preventDefault();
           closeMobileNav();
-
-          if (reduceMotion) {
-            target.scrollIntoView({ behavior: 'auto', block: 'start' });
-            history.pushState(null, '', href);
-            return;
-          }
-
-          var rect = link.getBoundingClientRect();
-          var x = event.clientX || rect.left + rect.width / 2;
-          var y = event.clientY || rect.top + rect.height / 2;
-          overlay.style.setProperty('--tx', x + 'px');
-          overlay.style.setProperty('--ty', y + 'px');
-          overlay.classList.remove('is-leaving');
-          overlay.classList.add('is-active');
-
-          window.setTimeout(function() {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            history.pushState(null, '', href);
-            overlay.classList.add('is-leaving');
-          }, 230);
-          window.setTimeout(function() {
-            overlay.classList.remove('is-active', 'is-leaving');
-          }, 680);
+          if (!reduceMotion) window.setTimeout(function() { cueSection(target); }, 180);
         });
       });
     })();
