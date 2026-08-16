@@ -1024,8 +1024,8 @@
 
     .honors-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
     }
     .honor-card {
       min-height: 100%;
@@ -1035,8 +1035,6 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      max-width: 860px;
-      margin: 0 auto;
     }
     .honor-card figure {
       margin: 0;
@@ -1233,7 +1231,8 @@
       .ability-pill:nth-child(6) { left: 10%; bottom: 7%; }
       .ability-pill:nth-child(7) { right: 7%; bottom: 9%; }
       .ability-pill:nth-child(8) { right: 38%; top: 34%; }
-      .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metric-grid,
+      .honors-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .project-card,
       .project-card.featured,
       .project-card.side { grid-column: span 12; min-height: auto; }
@@ -1251,7 +1250,8 @@
       .stage-card.four { width: 142px; }
       .metric-grid,
       .gpa-row,
-      .course-grid { grid-template-columns: 1fr; }
+      .course-grid,
+      .honors-grid { grid-template-columns: 1fr; }
       .about-card .mini-stat:nth-child(2) { grid-column: auto; }
       .about-stage-title { font-size: clamp(46px, 16vw, 72px); }
       .ability-pill:nth-child(2),
