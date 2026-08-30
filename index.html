@@ -66,6 +66,61 @@
       border-color: rgba(232, 93, 79, 0.5);
     }
 
+    body.curtain-intro { overflow: hidden; }
+    .curtain-intro .topbar,
+    .curtain-intro .hero h1 .letter,
+    .curtain-intro .hero-actions,
+    .curtain-intro .stage-card {
+      animation-play-state: paused;
+    }
+    .curtain-opening {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      overflow: hidden;
+      pointer-events: none;
+      background: #2f1020;
+    }
+    .curtain-opening::before,
+    .curtain-opening::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 52%;
+      height: 100%;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.08), transparent 11%, rgba(0,0,0,.28) 25%, rgba(255,255,255,.05) 42%, rgba(0,0,0,.22) 58%, rgba(255,255,255,.06) 77%, rgba(0,0,0,.34)),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 2px, transparent 2px 18px),
+        linear-gradient(180deg, #852f4a 0%, #641f38 43%, #451325 100%);
+      box-shadow: inset 0 0 60px rgba(0,0,0,.38), 0 0 48px rgba(15,4,9,.35);
+      will-change: transform;
+    }
+    .curtain-opening::before {
+      left: 0;
+      transform-origin: left center;
+      border-right: 2px solid rgba(255,222,194,.26);
+      animation: curtainLeft 1.35s cubic-bezier(.72, 0, .2, 1) .16s forwards;
+    }
+    .curtain-opening::after {
+      right: 0;
+      transform-origin: right center;
+      border-left: 2px solid rgba(255,222,194,.26);
+      animation: curtainRight 1.35s cubic-bezier(.72, 0, .2, 1) .16s forwards;
+    }
+    .curtain-rail {
+      position: absolute;
+      inset: 0 0 auto;
+      z-index: 1;
+      height: 44px;
+      background: linear-gradient(180deg, #251019, #6a2a3d 42%, #d69c6e 45%, #6a2a3d 55%, #210c15 100%);
+      box-shadow: 0 8px 18px rgba(0,0,0,.38);
+    }
+    .curtain-opening.is-open {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .24s ease, visibility 0s linear .24s;
+    }
+
     .site-shell { overflow: hidden; }
     .topbar {
       position: fixed;
@@ -441,6 +496,14 @@
     @keyframes cardArrive {
       from { opacity: 0; transform: translateY(80px) rotate(0deg) scale(.78); filter: blur(12px); }
       to { opacity: 1; }
+    }
+    @keyframes curtainLeft {
+      from { transform: translateX(0); }
+      to { transform: translateX(-102%); }
+    }
+    @keyframes curtainRight {
+      from { transform: translateX(0); }
+      to { transform: translateX(102%); }
     }
 
     .marquee {
@@ -1148,6 +1211,7 @@
         opacity: 1;
         transform: none;
       }
+      .curtain-opening { display: none; }
     }
 
     @media (max-width: 940px) {
@@ -1265,7 +1329,8 @@
     }
   </style>
 </head>
-<body>
+<body class="curtain-intro">
+  <div class="curtain-opening" aria-hidden="true"><div class="curtain-rail"></div></div>
   <div class="cursor" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="#home" aria-label="回到首页"><span class="brand-mark">张</span><span>Enci Zhang</span></a>
@@ -1477,6 +1542,26 @@
   </main>
 
   <script>
+    (function playCurtainIntro() {
+      var opening = document.querySelector('.curtain-opening');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var hasSeenIntro = false;
+      try { hasSeenIntro = window.sessionStorage.getItem('enci-curtain-intro') === 'seen'; } catch (error) {}
+
+      function finishIntro() {
+        document.body.classList.remove('curtain-intro');
+        if (opening) opening.classList.add('is-open');
+      }
+
+      if (!opening || reduceMotion || hasSeenIntro) {
+        finishIntro();
+        return;
+      }
+
+      try { window.sessionStorage.setItem('enci-curtain-intro', 'seen'); } catch (error) {}
+      window.setTimeout(finishIntro, 1580);
+    })();
+
     (function arrangeContent() {
       var main = document.querySelector('main');
       if (!main) return;
