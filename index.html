@@ -659,6 +659,7 @@
     .ability-pill:nth-child(4) { left: 3%; bottom: 22%; transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0) rotate(-7deg); }
     .ability-pill:nth-child(5) { right: 4%; bottom: 25%; transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0) rotate(8deg); }
     .ability-pill:nth-child(6) { left: 33%; bottom: 4%; transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0) rotate(-4deg); }
+    .ability-pill:nth-child(7) { right: 25%; bottom: 2%; transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0) rotate(5deg); }
     .ability-pill:hover {
       translate: 0 -12px;
       scale: 1.04;
@@ -1319,7 +1320,7 @@
       .about-card .mini-stat:nth-child(2) { grid-column: auto; }
       .about-stage-title { font-size: clamp(46px, 16vw, 72px); }
       .ability-pill:nth-child(2),
-      .ability-pill:nth-child(7) { display: none; }
+      .ability-pill:nth-child(4) { display: none; }
       .project-body,
       .experience-card,
       .panel,
@@ -1421,7 +1422,7 @@
         </div>
         <div class="about-card wide skill-stack">
           <div class="skill-block"><h3>熟练掌握产品工具</h3><div class="tags"><span class="tag">Figma</span><span class="tag">XMind</span><span class="tag">Git</span><span class="tag">Python</span><span class="tag">SQL</span></div></div>
-          <div class="skill-block"><h3>AI 能力</h3><div class="tags"><span class="tag">提示词工程</span><span class="tag">Vibe Coding</span></div></div>
+          <div class="skill-block"><h3>AI 能力</h3><div class="tags"><span class="tag">提示词工程</span><span class="tag">Vibe Coding</span><span class="tag">AI 效果评测体系</span></div></div>
           <div class="skill-block"><h3>语言能力</h3><div class="tags"><span class="tag">CET-6 619</span><span class="tag">CET-4 629</span><span class="tag">口语日常交流</span></div></div>
         </div>
       </div>
@@ -1432,6 +1433,7 @@
         <span class="ability-pill">数据分析</span>
         <span class="ability-pill">竞品分析</span>
         <span class="ability-pill">提示词工程</span>
+        <span class="ability-pill">AI 效果评测体系</span>
         <h3 class="about-stage-title">我的能力</h3>
       </div>
     </section>
@@ -1481,6 +1483,10 @@
         <article class="project-card">
           <div class="project-media"><div class="project-art tone-coral" data-mark="V"><span>AI 生视频 Prompt 心得</span></div></div>
           <div class="project-body"><div class="project-meta"><span>飞书知识库文档</span><span>07</span></div><h3 class="project-title">AI 生视频提示词实战心得</h3><p class="project-desc">深入拆解 AI 视频生成的提示词写作逻辑，涵盖镜头语言、运镜描述、风格控制与负向提示词运用等核心技巧，沉淀可直接复用的提示词模版与踩坑经验，帮助快速出圈高质量 AI 视频。</p><div class="project-process"><div class="process-step"><b>问题</b><span>视频提示词难复用</span></div><div class="process-step"><b>动作</b><span>拆解镜头与风格控制</span></div><div class="process-step"><b>结果</b><span>沉淀提示词模板</span></div></div><div class="project-actions"><a class="text-link" href="https://ucn828tu6waf.feishu.cn/wiki/NvzewmDzwiFfc6kYmwJcZ8k7nsq" target="_blank" rel="noopener">查看完整文档</a></div></div>
+        </article>
+        <article class="project-card">
+          <div class="project-media"><div class="project-art tone-sky" data-mark="J"><span>OtterLife × 薄荷健康</span></div></div>
+          <div class="project-body"><div class="project-meta"><span>即刻产品笔试 · Case Study</span><span>08</span></div><h3 class="project-title">OtterLife × 薄荷健康 · 产品体验与增长分析</h3><p class="project-desc">面试即刻公司时完成的产品经理笔试案例。实测对比两款产品的拍照识别与食物库记录链路，定位“核心记录流程过长”为 P0 问题，提出“默认快速记录、按需精细修改”的改进方案，并建立覆盖完成率、记录耗时、D7 / D30 留存及会员续订率的 A/B 验证体系；同时拆解新手引导的付费动机与转化漏斗，提出快速生成首版计划、可选深度定制和断点续填方案。作答获得面试团队认可，并顺利获得 Offer。</p><div class="project-process"><div class="process-step"><b>问题</b><span>记录链路长、引导负担重</span></div><div class="process-step"><b>动作</b><span>竞品拆解、方案与指标设计</span></div><div class="process-step"><b>结果</b><span>方案获认可并获得 Offer</span></div></div><div class="project-actions"><a class="text-link" href="https://ucn828tu6waf.feishu.cn/wiki/SkFSwBZsHibvgmksLX1con4GnTg" target="_blank" rel="noopener">查看完整作答</a></div></div>
         </article>
       </div>
     </section>
@@ -1650,7 +1656,7 @@
       var pills = Array.from(document.querySelectorAll('.ability-pill'));
       var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       if (!pills.length || reduceMotion.matches || !window.matchMedia('(pointer: fine)').matches) return;
-      var rotations = ['8deg', '-9deg', '-8deg', '-7deg', '8deg', '-4deg'];
+      var rotations = ['8deg', '-9deg', '-8deg', '-7deg', '8deg', '-4deg', '5deg'];
 
       function setPillTransform(pill, index, x, y) {
         pill.style.transform = 'translate3d(' + x.toFixed(2) + 'px, ' + y.toFixed(2) + 'px, 0) rotate(' + (rotations[index] || '0deg') + ') scale(1.04)';
